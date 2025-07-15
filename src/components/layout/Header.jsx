@@ -131,7 +131,7 @@ import { Link } from 'react-router-dom';
             <Link to="/" className="text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-green-400 transition-colors">
               Home
             </Link>
-            <Link to="/news/landing" className="text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-green-400 transition-colors">
+            <Link to="/news" className="text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-green-400 transition-colors">
               News
             </Link>
             <div className="relative group">
@@ -144,9 +144,9 @@ import { Link } from 'react-router-dom';
                     <div>
                       <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">About CITES</h4>
                       <ul className="space-y-2">
-                        <li><Link to="/disc/what" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">What is CITES?</Link></li>
-                        <li><Link to="/disc/how" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">How CITES works?</Link></li>
-                        <li><Link to="/disc/fund" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">How is CITES financed?</Link></li>
+                        <li><Link to="/what-is-cites" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">What is CITES?</Link></li>
+                        <li><Link to="/how-cites-works" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">How CITES works?</Link></li>
+                        <li><Link to="/financing" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">How is CITES financed?</Link></li>
                         <li><Link to="/cites-violation-fines" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">CITES Violation Fines</Link></li>
                         <li><Link to="/reptile-transport-requirements" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">Reptile Transport Requirements</Link></li>
                         <li><Link to="/apply-permit" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">Apply for Permit</Link></li>
@@ -156,15 +156,15 @@ import { Link } from 'react-router-dom';
                     <div>
                       <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">Parties</h4>
                       <ul className="space-y-2">
-                        <li><button className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">List of parties to the convention</button></li>
-                        <li><button className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">Country profiles</button></li>
+                        <li><a href="https://cites.org/eng/disc/parties/index.php" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">List of parties to the convention</a></li>
+                        <li><a href="https://cites.org/eng/disc/parties/index.php" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">Country profiles</a></li>
                       </ul>
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">Secretariat</h4>
                       <ul className="space-y-2">
-                        <li><button className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">Overview</button></li>
-                        <li><button className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">Secretary-General</button></li>
+                        <li><a href="https://cites.org/eng/disc/sec/index.php" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">Overview</a></li>
+                        <li><a href="https://cites.org/eng/disc/sec/index.php" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">Secretary-General</a></li>
                       </ul>
                     </div>
                   </div>
@@ -172,19 +172,19 @@ import { Link } from 'react-router-dom';
               </div>
             </div>
             <div className="relative group">
-              <span className="text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-green-400 cursor-pointer transition-colors">
+              <a href="https://cites.org/eng/disc/text.php" target="_blank" rel="noopener noreferrer" className="text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-green-400 cursor-pointer transition-colors">
                 Documents
-              </span>
+              </a>
             </div>
             <div className="relative group">
-              <span className="text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-green-400 cursor-pointer transition-colors">
+              <a href="https://cites.org/eng/imp/index.php" target="_blank" rel="noopener noreferrer" className="text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-green-400 cursor-pointer transition-colors">
                 Implementation
-              </span>
+              </a>
             </div>
             <div className="relative group">
-              <span className="text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-green-400 cursor-pointer transition-colors">
+              <a href="https://cites.org/eng" target="_blank" rel="noopener noreferrer" className="text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-green-400 cursor-pointer transition-colors">
                 Topics
-              </span>
+              </a>
             </div>
           </div>
         </div>
@@ -198,10 +198,10 @@ import { Link } from 'react-router-dom';
           <div className="mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 transition-colors">
             <div className="space-y-4">
               <Link to="/" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">Home</Link>
-              <Link to="/news/landing" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">News</Link>
-              <Link to="/disc/what" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">What is CITES?</Link>
-              <Link to="/disc/how" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">How CITES works?</Link>
-              <Link to="/disc/fund" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">How is CITES financed?</Link>
+              <Link to="/news" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">News</Link>
+              <Link to="/what-is-cites" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">What is CITES?</Link>
+              <Link to="/how-cites-works" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">How CITES works?</Link>
+              <Link to="/financing" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">How is CITES financed?</Link>
               <Link to="/cites-violation-fines" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">CITES Violation Fines</Link>
               <Link to="/reptile-transport-requirements" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">Reptile Transport Requirements</Link>
               <Link to="/apply-permit" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">Apply for Permit</Link>
