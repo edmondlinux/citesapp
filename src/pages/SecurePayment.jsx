@@ -7,6 +7,7 @@ const SecurePayment = () => {
   const location = useLocation();
   const [applicationNumber, setApplicationNumber] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [paymentData, setPaymentData] = useState({
     cardNumber: '',
     expiryMonth: '',
@@ -25,9 +26,9 @@ const SecurePayment = () => {
     const appNumber = params.get('application');
     if (appNumber) {
       setApplicationNumber(appNumber);
+      setHasError(false);
     } else {
-      // Generate a temporary application number if none provided
-      setApplicationNumber(`TEMP-${Date.now().toString().slice(-6)}`);
+      setHasError(true);
     }
   }, [location]);
 
@@ -86,6 +87,41 @@ const SecurePayment = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-green-900/20">
       <div className="container-big py-8">
         <Breadcrumb items={breadcrumbItems} />
+
+        {hasError && (
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-8 shadow-lg">
+              <div className="flex items-center justify-center">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+                    <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <h1 className="text-3xl font-bold text-red-800 dark:text-red-200 mb-4">
+                    Payment Access Error
+                  </h1>
+                  <p className="text-red-700 dark:text-red-300 text-lg mb-6 max-w-2xl">
+                    This payment portal requires a valid application number. Please access this page through the proper application submission process.
+                  </p>
+                  <div className="space-y-4">
+                    <button
+                      onClick={() => window.location.href = '/apply-permit'}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                    >
+                      Start New Application
+                    </button>
+                    <p className="text-sm text-red-600 dark:text-red-400">
+                      If you believe this is an error, please contact support with your application reference number.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!hasError && (
 
         <div className="max-w-4xl mx-auto">
           {/* Security Banner */}
@@ -447,6 +483,7 @@ const SecurePayment = () => {
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
