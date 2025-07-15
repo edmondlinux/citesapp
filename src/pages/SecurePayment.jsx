@@ -132,7 +132,7 @@ const SecurePayment = () => {
                   <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                 </svg>
                 <span className="text-green-800 dark:text-green-200 font-semibold text-lg">
-                  🔒 Secure Payment Portal - 256-bit SSL Encrypted
+                   Secure Payment Portal - 256-bit SSL Encrypted
                 </span>
               </div>
             </div>
@@ -232,6 +232,7 @@ const SecurePayment = () => {
                     <select
                       name="expiryMonth"
                       value={paymentData.expiryMonth}
+                      
                       onChange={handleInputChange}
                       className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200 shadow-sm"
                       required
@@ -265,10 +266,11 @@ const SecurePayment = () => {
                     </label>
                     <div className="relative">
                       <input
-                        type="text"
+                        type="password"
                         name="cvv"
                         value={paymentData.cvv}
                         onChange={handleInputChange}
+                        
                         placeholder="123"
                         className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white font-mono transition-all duration-200 shadow-sm"
                         required
