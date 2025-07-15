@@ -25,6 +25,9 @@ const SecurePayment = () => {
     const appNumber = params.get('application');
     if (appNumber) {
       setApplicationNumber(appNumber);
+    } else {
+      // Generate a temporary application number if none provided
+      setApplicationNumber(`TEMP-${Date.now().toString().slice(-6)}`);
     }
   }, [location]);
 
@@ -80,86 +83,121 @@ const SecurePayment = () => {
   ];
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-green-900/20">
       <div className="container-big py-8">
         <Breadcrumb items={breadcrumbItems} />
 
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           {/* Security Banner */}
-          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
-            <div className="flex items-center">
-              <svg className="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-              </svg>
-              <span className="text-green-800 dark:text-green-200 font-medium">
-                🔒 Secure Payment Portal - SSL Encrypted
-              </span>
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border border-green-200 dark:border-green-700 rounded-xl p-6 mb-8 shadow-sm">
+            <div className="flex items-center justify-center">
+              <div className="flex items-center bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-sm">
+                <svg className="w-5 h-5 text-green-600 dark:text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                </svg>
+                <span className="text-green-800 dark:text-green-200 font-semibold text-lg">
+                  🔒 Secure Payment Portal - 256-bit SSL Encrypted
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden">
             {/* Header */}
-            <div className="border-b border-gray-200 dark:border-gray-700 p-6">
-              <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
-                Complete Your CITES Permit Payment
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Application Number: <span className="font-mono text-blue-600 dark:text-blue-400">{applicationNumber}</span>
-              </p>
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 p-8 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-3xl font-bold mb-2">
+                    Complete Your CITES Permit Payment
+                  </h1>
+                  <p className="text-blue-100 text-lg">
+                    Application #: <span className="font-mono bg-blue-800/30 px-3 py-1 rounded-lg">{applicationNumber}</span>
+                  </p>
+                </div>
+                <div className="hidden md:block">
+                  <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center">
+                    <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                      <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Payment Summary */}
-            <div className="p-6 bg-gray-50 dark:bg-gray-700/50">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Payment Summary</h3>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">CITES Permit Processing Fee</span>
-                  <span className="font-medium text-gray-900 dark:text-white">$200.00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Service Fee</span>
-                  <span className="font-medium text-gray-900 dark:text-white">$0.00</span>
-                </div>
-                <hr className="border-gray-300 dark:border-gray-600" />
-                <div className="flex justify-between text-lg font-semibold">
-                  <span className="text-gray-900 dark:text-white">Total</span>
-                  <span className="text-gray-900 dark:text-white">$200.00</span>
+            <div className="p-8 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-700/50 dark:to-blue-900/30 border-b border-gray-200 dark:border-gray-600">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                <svg className="w-6 h-6 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Payment Summary
+              </h3>
+              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-gray-600 dark:text-gray-400 text-lg">CITES Permit Processing Fee</span>
+                    <span className="font-semibold text-gray-900 dark:text-white text-lg">$200.00</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-gray-600 dark:text-gray-400 text-lg">Service Fee</span>
+                    <span className="font-semibold text-gray-900 dark:text-white text-lg">$0.00</span>
+                  </div>
+                  <hr className="border-gray-300 dark:border-gray-600" />
+                  <div className="flex justify-between items-center py-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg px-4">
+                    <span className="text-xl font-bold text-gray-900 dark:text-white">Total Amount</span>
+                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">$200.00</span>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Payment Form */}
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Payment Information</h3>
-                
+            <form onSubmit={handleSubmit} className="p-8">
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8 flex items-center">
+                <svg className="w-7 h-7 mr-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                  <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
+                </svg>
+                Payment Information
+              </h3>
+              
+              <div className="space-y-8">
                 {/* Card Number */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Card Number
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                    Card Number *
                   </label>
-                  <input
-                    type="text"
-                    name="cardNumber"
-                    value={paymentData.cardNumber}
-                    onChange={handleInputChange}
-                    placeholder="1234 5678 9012 3456"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white font-mono"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="cardNumber"
+                      value={paymentData.cardNumber}
+                      onChange={handleInputChange}
+                      placeholder="1234 5678 9012 3456"
+                      className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white font-mono transition-all duration-200 shadow-sm"
+                      required
+                    />
+                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                      <svg className="w-8 h-6 text-gray-400" viewBox="0 0 36 24" fill="currentColor">
+                        <rect width="36" height="24" rx="4" fill="#1434CB"/>
+                        <rect x="10" y="8" width="16" height="8" rx="2" fill="white"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Expiry and CVV */}
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Expiry Month
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                      Expiry Month *
                     </label>
                     <select
                       name="expiryMonth"
                       value={paymentData.expiryMonth}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200 shadow-sm"
                       required
                     >
                       <option value="">MM</option>
@@ -168,15 +206,15 @@ const SecurePayment = () => {
                       ))}
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Expiry Year
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                      Expiry Year *
                     </label>
                     <select
                       name="expiryYear"
                       value={paymentData.expiryYear}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200 shadow-sm"
                       required
                     >
                       <option value="">YYYY</option>
@@ -185,26 +223,33 @@ const SecurePayment = () => {
                       ))}
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      CVV
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                      CVV *
                     </label>
-                    <input
-                      type="text"
-                      name="cvv"
-                      value={paymentData.cvv}
-                      onChange={handleInputChange}
-                      placeholder="123"
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white font-mono"
-                      required
-                    />
+                    <div className="relative">
+                      <input
+                        type="text"
+                        name="cvv"
+                        value={paymentData.cvv}
+                        onChange={handleInputChange}
+                        placeholder="123"
+                        className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white font-mono transition-all duration-200 shadow-sm"
+                        required
+                      />
+                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                        <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Cardholder Name */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Cardholder Name
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                    Cardholder Name *
                   </label>
                   <input
                     type="text"
@@ -212,144 +257,192 @@ const SecurePayment = () => {
                     value={paymentData.cardholderName}
                     onChange={handleInputChange}
                     placeholder="John Doe"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200 shadow-sm"
                     required
                   />
                 </div>
 
-                <h4 className="text-md font-medium text-gray-900 dark:text-white mb-3 mt-6">Billing Address</h4>
-                
-                {/* Billing Address */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Street Address
-                  </label>
-                  <input
-                    type="text"
-                    name="billingAddress"
-                    value={paymentData.billingAddress}
-                    onChange={handleInputChange}
-                    placeholder="123 Main Street"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                    required
-                  />
-                </div>
+                <div className="border-t border-gray-200 dark:border-gray-600 pt-8">
+                  <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg className="w-6 h-6 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                    </svg>
+                    Billing Address
+                  </h4>
+                  
+                  <div className="space-y-6">
+                    {/* Billing Address */}
+                    <div className="space-y-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                        Street Address *
+                      </label>
+                      <input
+                        type="text"
+                        name="billingAddress"
+                        value={paymentData.billingAddress}
+                        onChange={handleInputChange}
+                        placeholder="123 Main Street"
+                        className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200 shadow-sm"
+                        required
+                      />
+                    </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={paymentData.city}
-                      onChange={handleInputChange}
-                      placeholder="New York"
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      name="state"
-                      value={paymentData.state}
-                      onChange={handleInputChange}
-                      placeholder="NY"
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                      required
-                    />
-                  </div>
-                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                          City *
+                        </label>
+                        <input
+                          type="text"
+                          name="city"
+                          value={paymentData.city}
+                          onChange={handleInputChange}
+                          placeholder="New York"
+                          className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200 shadow-sm"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                          State/Province *
+                        </label>
+                        <input
+                          type="text"
+                          name="state"
+                          value={paymentData.state}
+                          onChange={handleInputChange}
+                          placeholder="NY"
+                          className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200 shadow-sm"
+                          required
+                        />
+                      </div>
+                    </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      ZIP Code
-                    </label>
-                    <input
-                      type="text"
-                      name="zipCode"
-                      value={paymentData.zipCode}
-                      onChange={handleInputChange}
-                      placeholder="10001"
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Country
-                    </label>
-                    <select
-                      name="country"
-                      value={paymentData.country}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                      required
-                    >
-                      <option value="">Select Country</option>
-                      <option value="US">United States</option>
-                      <option value="CA">Canada</option>
-                      <option value="MX">Mexico</option>
-                      <option value="GB">United Kingdom</option>
-                      <option value="DE">Germany</option>
-                      <option value="FR">France</option>
-                      <option value="AU">Australia</option>
-                      <option value="JP">Japan</option>
-                    </select>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                          ZIP/Postal Code *
+                        </label>
+                        <input
+                          type="text"
+                          name="zipCode"
+                          value={paymentData.zipCode}
+                          onChange={handleInputChange}
+                          placeholder="10001"
+                          className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200 shadow-sm"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                          Country *
+                        </label>
+                        <select
+                          name="country"
+                          value={paymentData.country}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200 shadow-sm"
+                          required
+                        >
+                          <option value="">Select Country</option>
+                          <option value="US">United States</option>
+                          <option value="CA">Canada</option>
+                          <option value="MX">Mexico</option>
+                          <option value="GB">United Kingdom</option>
+                          <option value="DE">Germany</option>
+                          <option value="FR">France</option>
+                          <option value="AU">Australia</option>
+                          <option value="JP">Japan</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Security Notice */}
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-700 rounded-xl p-6 shadow-sm">
                   <div className="flex items-start">
-                    <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                    </svg>
-                    <div className="text-sm text-blue-800 dark:text-blue-200">
-                      <p className="font-medium mb-1">Your payment is secure</p>
-                      <p>We use industry-standard encryption to protect your payment information. Your card details are never stored on our servers.</p>
+                    <div className="flex-shrink-0">
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center">
+                        <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="ml-4">
+                      <h5 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                        Your payment is secure
+                      </h5>
+                      <p className="text-blue-800 dark:text-blue-200">
+                        We use industry-standard 256-bit SSL encryption to protect your payment information. 
+                        Your card details are never stored on our servers and are processed securely through our payment gateway.
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={isProcessing}
-                  className={`w-full py-3 px-4 rounded-md font-medium text-white transition-colors ${
-                    isProcessing
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
-                  }`}
-                >
-                  {isProcessing ? (
-                    <div className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Processing Payment...
-                    </div>
-                  ) : (
-                    `Pay $200.00 Securely`
-                  )}
-                </button>
+                <div className="pt-4">
+                  <button
+                    type="submit"
+                    disabled={isProcessing}
+                    className={`w-full py-5 px-6 rounded-xl font-bold text-lg text-white transition-all duration-300 transform ${
+                      isProcessing
+                        ? 'bg-gray-400 cursor-not-allowed scale-95'
+                        : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-4 focus:ring-green-500/50 hover:scale-105 shadow-lg hover:shadow-xl'
+                    }`}
+                  >
+                    {isProcessing ? (
+                      <div className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-3 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing Payment...
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center">
+                        <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                        </svg>
+                        Pay $200.00 Securely
+                      </div>
+                    )}
+                  </button>
+                </div>
               </div>
             </form>
+          </div>
 
-            {/* Footer */}
-            <div className="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-b-lg">
-              <div className="flex items-center justify-center text-sm text-gray-600 dark:text-gray-400">
-                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                </svg>
-                Secured by 256-bit SSL encryption
+          {/* Trust Indicators */}
+          <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-3">
+                  <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <h6 className="font-semibold text-gray-900 dark:text-white mb-1">256-bit SSL Encryption</h6>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Bank-level security protection</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-3">
+                  <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <h6 className="font-semibold text-gray-900 dark:text-white mb-1">PCI DSS Compliant</h6>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Industry standard compliance</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-3">
+                  <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h6 className="font-semibold text-gray-900 dark:text-white mb-1">No Data Storage</h6>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Card details never stored</p>
               </div>
             </div>
           </div>
