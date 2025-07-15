@@ -8,7 +8,7 @@ const errorHandler = require('./middleware/errorHandler');
 require('dotenv').config();
 
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 
 // Connect to database
 connectDB();
