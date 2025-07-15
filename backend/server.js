@@ -49,7 +49,8 @@ app.get('/api/health', (req, res) => {
 });
 
 // Routes
-app.use('/api/permits', permitRoutes);
+app.use('/api/permits', require('./routes/permits'));
+app.use('/api/payments', require('./routes/payments'));
 
 // Error handling middleware
 app.use(errorHandler);

