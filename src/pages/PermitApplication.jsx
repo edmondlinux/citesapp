@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Breadcrumb from '../components/common/Breadcrumb';
 import ApplicantInfoSection from '../components/permit/ApplicantInfoSection';
 import PermitInfoSection from '../components/permit/PermitInfoSection';
@@ -12,6 +12,7 @@ const PermitApplication = () => {
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
   const [errorMessage, setErrorMessage] = useState('');
   const [successData, setSuccessData] = useState(null);
+  const [redirectCountdown, setRedirectCountdown] = useState(null);
 
   const [formData, setFormData] = useState({
     // Applicant info
@@ -59,6 +60,26 @@ const PermitApplication = () => {
     { label: 'Home', href: '/' },
     { label: 'Apply for CITES Permit', href: '/apply-permit' }
   ];
+
+  // Auto-redirect countdown effect
+  useEffect(() => {
+    if (submitStatus === 'success' && successData) {
+      setRedirectCountdown(10);
+      
+      const countdown = setInterval(() => {
+        setRedirectCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(countdown);
+            window.location.href = `/payment?application=${successData.applicationNumber}`;
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(countdown);
+    }
+  }, [submitStatus, successData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -214,16 +235,35 @@ const PermitApplication = () => {
                       </p>
                       <p className="text-blue-700 dark:text-blue-300 text-sm mb-3">
                         To complete your CITES permit application, a processing fee of <strong>$200.00</strong> is required. 
-                        You will now be redirected to our secure payment portal to complete the transaction.
+                        {redirectCountdown > 0 ? (
+                          <span className="block mt-2 font-medium">
+                            Redirecting to payment portal in <span className="text-blue-800 dark:text-blue-200 font-bold">{redirectCountdown}</span> seconds...
+                          </span>
+                        ) : (
+                          "You will now be redirected to our secure payment portal to complete the transaction."
+                        )}
                       </p>
-                      <button
-                        onClick={() => {
-                          window.location.href = `/payment?application=${successData?.applicationNumber || 'temp'}`;
-                        }}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                      >
-                        Proceed to Payment
-                      </button>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => {
+                            window.location.href = `/payment?application=${successData?.applicationNumber || 'temp'}`;
+                          }}
+                          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                        >
+                          Proceed to Payment Now
+                        </button>
+                        {redirectCountdown > 0 && (
+                          <button
+                            onClick={() => {
+                              setRedirectCountdown(null);
+                              setSubmitStatus(null);
+                            }}
+                            className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                          >
+                            Cancel Auto-Redirect
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
