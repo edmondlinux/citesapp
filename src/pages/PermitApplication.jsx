@@ -196,7 +196,7 @@ const PermitApplication = () => {
                       Your CITES permit application has been received and is being processed.
                     </p>
                     {successData && (
-                      <div className="bg-white dark:bg-gray-800 p-4 rounded border">
+                      <div className="bg-white dark:bg-gray-800 p-4 rounded border mb-4">
                         <p><strong>Application Number:</strong> {successData.applicationNumber}</p>
                         <p><strong>Status:</strong> {successData.status}</p>
                         <p><strong>Submitted:</strong> {new Date(successData.submittedAt).toLocaleString()}</p>
@@ -205,6 +205,26 @@ const PermitApplication = () => {
                         </p>
                       </div>
                     )}
+                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded p-4 mt-4">
+                      <p className="text-blue-800 dark:text-blue-200 font-medium mb-2">
+                        <svg className="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                        </svg>
+                        Payment Required
+                      </p>
+                      <p className="text-blue-700 dark:text-blue-300 text-sm mb-3">
+                        To complete your CITES permit application, a processing fee of <strong>$200.00</strong> is required. 
+                        You will now be redirected to our secure payment portal to complete the transaction.
+                      </p>
+                      <button
+                        onClick={() => {
+                          window.location.href = `/payment?application=${successData?.applicationNumber || 'temp'}`;
+                        }}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                      >
+                        Proceed to Payment
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

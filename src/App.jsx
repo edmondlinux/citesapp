@@ -11,6 +11,7 @@ import NewsLanding from './pages/NewsLanding';
 import CitesViolationFines from './pages/CitesViolationFines';
 import ReptileTransportRequirements from './pages/ReptileTransportRequirements';
 import PermitApplication from './pages/PermitApplication';
+import SecurePayment from './pages/SecurePayment';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/cites-violation-fines" element={<CitesViolationFines />} />
             <Route path="/reptile-transport-requirements" element={<ReptileTransportRequirements />} />
             <Route path="/apply-permit" element={<PermitApplication />} />
+          <Route path="/payment" element={<SecurePayment />} />
           </Routes>
         </main>
         <Footer />
