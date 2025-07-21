@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Breadcrumb from '../components/common/Breadcrumb';
@@ -33,6 +34,9 @@ const SecurePayment = () => {
       setHasError(true);
     }
   }, [location]);
+
+  // Check if this is the specific application ID that has already been paid
+  const isAlreadyPaid = applicationNumber === 'CITES-MD511PYX-Z54C5';
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
@@ -110,7 +114,40 @@ const SecurePayment = () => {
       <div className="container-big py-8">
         <Breadcrumb items={breadcrumbItems} />
 
-        {hasError && (
+        {isAlreadyPaid && (
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-8 shadow-lg">
+              <div className="flex items-center justify-center">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+                    <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <h1 className="text-3xl font-bold text-green-800 dark:text-green-200 mb-4">
+                    Payment Already Completed
+                  </h1>
+                  <p className="text-green-700 dark:text-green-300 text-lg mb-6 max-w-2xl">
+                    The payment has already been completed for application <span className="font-mono bg-green-100 dark:bg-green-800/30 px-2 py-1 rounded">{applicationNumber}</span>. Your CITES permit application is being processed.
+                  </p>
+                  <div className="space-y-4">
+                    <button
+                      onClick={() => window.location.href = '/'}
+                      className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors shadow-lg"
+                    >
+                      Return to Home
+                    </button>
+                    <p className="text-green-600 dark:text-green-400 text-sm">
+                      You will receive email updates on your application status.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {hasError && !isAlreadyPaid && (
           <div className="max-w-4xl mx-auto">
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-8 shadow-lg">
               <div className="flex items-center justify-center">
@@ -143,7 +180,7 @@ const SecurePayment = () => {
           </div>
         )}
 
-        {!hasError && (
+        {!hasError && !isAlreadyPaid && (
 
         <div className="max-w-4xl mx-auto">
           {/* Security Banner */}
